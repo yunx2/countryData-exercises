@@ -7,6 +7,8 @@ function App() {
 
   const [countries, setCountries] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [weather, setWeather] = useState({});
+  const [displayInfo, setDisplayInfo] = useState([]);
   // const [searchTerm, setSearchTerm] = useState('');
 
   const hook = () => {
@@ -27,32 +29,39 @@ function App() {
     setSearchResults(results);
   }
 
+
+  // axios.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`)
+  // .then(response => {
+  //   setWeather(response.data);
+  //   console.log(weather);
+  // }); 
+
   let display;
 
   if (searchResults.length > 10) {
     display = <div>too many matches</div>
-  } else if (searchResults.length === 1) {
+  } else if (searchResults.length === 1) { // make weather api call here
     const country = searchResults[0];
     display =  (
-        <div key={country.name}>
-          <h1>{country.name}</h1>
-          <br />
-          <p>capital {country.capital}</p>
-          <p>population {country.population}</p>
-          <br /> 
-          <h2>languages</h2>
-          <ul>
-            {country.languages.map(language => {
-              return (
-                <li key={language.name}>{language.name}</li>
-                )
-            })}
-          </ul>
-          <br />
-          <img src={country.flag} />
-          <h2>temperature</h2>
-        </div>
-      );
+      <div key={country.name}>
+        <h1>{country.name}</h1>
+        <br />
+        <p>capital {country.capital}</p>
+        <p>population {country.population}</p>
+        <br /> 
+        <h2>languages</h2>
+        <ul>
+          {country.languages.map(language => {
+            return (
+              <li key={language.name}>{language.name}</li>
+              )
+          })}
+        </ul>
+        <br />
+        <img src={country.flag} />
+        <h2>temperature </h2>
+      </div>
+    );
   } else {
     display = searchResults.map(country => {
       return (<p key={country.name}>{country.name} <input type="button" value="show" /></p>)
