@@ -6,7 +6,7 @@ function App() {
 
   const [countries, setCountries] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  // const [searchTerm, setSearchTerm] = useState('');
 
   const hook = () => {
     axios.get('https://restcountries.eu/rest/v2/all')
@@ -16,8 +16,14 @@ function App() {
   useEffect(hook, []);
 
   const handleChange = e => {
-    const term = e.target.value;
-    setSearchTerm(term);
+    const term = e.target.value.toLowerCase();
+    // setSearchTerm(term);
+
+    const results = countries.filter(country => {
+      const name = country.name.toLowerCase();
+      return name.includes(term);
+    })
+    setSearchResults(results);
   }
 
 
@@ -25,10 +31,11 @@ function App() {
     <div>
       find countries
       <input onChange={handleChange} />
+      <div>debug: {JSON.stringify(searchResults.map(result => result.name))}</div>
       <div>
-        {countries.map(country => {
+        {searchResults.map(country => {
           return (
-            <div>
+            <div key={country.name}>
               <h1>{country.name}</h1>
               <br />
               <p>capital {country.capital}</p>
@@ -36,7 +43,11 @@ function App() {
               <br /> 
               <h2>languages</h2>
               <ul>
-                {country.languages.map(language => <li>l{language.name}</li>)}
+                {country.languages.map(language => {
+                  return (
+                    <li key={language.name}>{language.name}</li>
+                    )
+                })}
               </ul>
               <br />
               <img src={country.flag} />
