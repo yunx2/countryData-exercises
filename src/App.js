@@ -32,9 +32,8 @@ function App() {
   if (searchResults.length > 10) {
     display = <div>too many matches</div>
   } else if (searchResults.length === 1) {
-    display =  (<div>
-    {searchResults.map(country => {
-      return (
+    const country = searchResults[0];
+    display =  (
         <div key={country.name}>
           <h1>{country.name}</h1>
           <br />
@@ -51,13 +50,15 @@ function App() {
           </ul>
           <br />
           <img src={country.flag} />
+          <h2>temperature</h2>
         </div>
       );
-    })} 
-  </div>)
+  } else {
+    display = searchResults.map(country => {
+      return (<p key={country.name}>{country.name} <input type="button" value="show" /></p>)
+    })
   }
-
-
+ 
   return (
     <div>
       find countries
