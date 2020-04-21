@@ -13,10 +13,17 @@ function App() {
 
   const hook = () => {
     axios.get('https://restcountries.eu/rest/v2/all')
-      .then(response => setCountries(response.data));
+      .then(response => {
+        setCountries(response.data);
+        setWeather(Promise.all(countries.map(country => { 
+          axios.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`);
+        })))
+        console.log(weather)
+      })
   };
 
   useEffect(hook, []);
+  
 
   const handleChange = e => {
     const term = e.target.value.toLowerCase();
@@ -30,11 +37,6 @@ function App() {
   }
 
 
-  // axios.get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`)
-  // .then(response => {
-  //   setWeather(response.data);
-  //   console.log(weather);
-  // }); 
 
   let display;
 
