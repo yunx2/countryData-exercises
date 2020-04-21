@@ -1,24 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 
 function App() {
+
+  const [search, setSearch] = useState('');
+
+  const handleChange = e => {
+    const val = e.target.value;
+    setSearch(val);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      find countries
+      <input onChange={handleChange} />
     </div>
   );
 }
 
 export default App;
+
+// write onChange handler to sync user input to state
+  // create state
+  // write onChange handler 
