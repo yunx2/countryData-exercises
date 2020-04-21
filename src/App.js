@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 
+const api_key = process.env.REACT_APP_API_KEY;
 
 function App() {
 
@@ -26,35 +27,43 @@ function App() {
     setSearchResults(results);
   }
 
+  let display;
+
+  if (searchResults.length > 10) {
+    display = <div>too many matches</div>
+  } else if (searchResults.length === 1) {
+    display =  (<div>
+    {searchResults.map(country => {
+      return (
+        <div key={country.name}>
+          <h1>{country.name}</h1>
+          <br />
+          <p>capital {country.capital}</p>
+          <p>population {country.population}</p>
+          <br /> 
+          <h2>languages</h2>
+          <ul>
+            {country.languages.map(language => {
+              return (
+                <li key={language.name}>{language.name}</li>
+                )
+            })}
+          </ul>
+          <br />
+          <img src={country.flag} />
+        </div>
+      );
+    })} 
+  </div>)
+  }
+
 
   return (
     <div>
       find countries
       <input onChange={handleChange} />
       <div>debug: {JSON.stringify(searchResults.map(result => result.name))}</div>
-      <div>
-        {searchResults.map(country => {
-          return (
-            <div key={country.name}>
-              <h1>{country.name}</h1>
-              <br />
-              <p>capital {country.capital}</p>
-              <p>population {country.population}</p>
-              <br /> 
-              <h2>languages</h2>
-              <ul>
-                {country.languages.map(language => {
-                  return (
-                    <li key={language.name}>{language.name}</li>
-                    )
-                })}
-              </ul>
-              <br />
-              <img src={country.flag} />
-            </div>
-          );
-        })} 
-      </div>
+      {display}
     </div>
   );
 }
